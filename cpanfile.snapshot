@@ -1,0 +1,434 @@
+# carton snapshot format: version 1.0
+DISTRIBUTIONS
+  Class-Inspector-1.36
+    pathname: P/PL/PLICEASE/Class-Inspector-1.36.tar.gz
+    provides:
+      Class::Inspector 1.36
+      Class::Inspector::Functions 1.36
+    requirements:
+      ExtUtils::MakeMaker 0
+      File::Spec 0.80
+      base 0
+      perl 5.008
+  Const-Fast-0.014
+    pathname: L/LE/LEONT/Const-Fast-0.014.tar.gz
+    provides:
+      Const::Fast 0.014
+    requirements:
+      Carp 0
+      Module::Build::Tiny 0.021
+      Scalar::Util 0
+      Storable 0
+      Sub::Exporter::Progressive 0.001007
+      perl 5.008
+      strict 0
+      warnings 0
+  ExtUtils-CChecker-0.12
+    pathname: P/PE/PEVANS/ExtUtils-CChecker-0.12.tar.gz
+    provides:
+      ExtUtils::CChecker 0.12
+    requirements:
+      ExtUtils::CBuilder 0
+      Module::Build 0.4004
+      perl 5.014
+  ExtUtils-Config-0.010
+    pathname: L/LE/LEONT/ExtUtils-Config-0.010.tar.gz
+    provides:
+      ExtUtils::Config 0.010
+      ExtUtils::Config::MakeMaker 0.010
+    requirements:
+      Data::Dumper 0
+      ExtUtils::MakeMaker 0
+      ExtUtils::MakeMaker::Config 0
+      perl 5.006
+      strict 0
+      warnings 0
+  ExtUtils-Helpers-0.028
+    pathname: L/LE/LEONT/ExtUtils-Helpers-0.028.tar.gz
+    provides:
+      ExtUtils::Helpers 0.028
+      ExtUtils::Helpers::Unix 0.028
+      ExtUtils::Helpers::VMS 0.028
+      ExtUtils::Helpers::Windows 0.028
+    requirements:
+      Carp 0
+      Exporter 5.57
+      ExtUtils::MakeMaker 0
+      File::Basename 0
+      File::Copy 0
+      File::Spec::Functions 0
+      Text::ParseWords 3.24
+      strict 0
+      warnings 0
+  ExtUtils-InstallPaths-0.014
+    pathname: L/LE/LEONT/ExtUtils-InstallPaths-0.014.tar.gz
+    provides:
+      ExtUtils::InstallPaths 0.014
+    requirements:
+      Carp 0
+      ExtUtils::Config 0.009
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      perl 5.008
+      strict 0
+      warnings 0
+  File-ShareDir-1.118
+    pathname: R/RE/REHSACK/File-ShareDir-1.118.tar.gz
+    provides:
+      File::ShareDir 1.118
+    requirements:
+      Carp 0
+      Class::Inspector 1.12
+      ExtUtils::MakeMaker 0
+      File::ShareDir::Install 0.13
+      File::Spec 0.80
+      perl 5.008001
+      warnings 0
+  File-ShareDir-Install-0.14
+    pathname: E/ET/ETHER/File-ShareDir-Install-0.14.tar.gz
+    provides:
+      File::ShareDir::Install 0.14
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      IO::Dir 0
+      perl 5.006
+      strict 0
+      warnings 0
+  Module-Build-0.42_35
+    pathname: L/LE/LEONT/Module-Build-0.42_35.tar.gz
+    provides:
+      Module::Build 0.42_35
+      Module::Build::Base 0.42_35
+      Module::Build::Compat 0.42_35
+      Module::Build::Config 0.42_35
+      Module::Build::Cookbook 0.42_35
+      Module::Build::Dumper 0.42_35
+      Module::Build::Notes 0.42_35
+      Module::Build::PPMMaker 0.42_35
+      Module::Build::Platform::Default 0.42_35
+      Module::Build::Platform::MacOS 0.42_35
+      Module::Build::Platform::Unix 0.42_35
+      Module::Build::Platform::VMS 0.42_35
+      Module::Build::Platform::VOS 0.42_35
+      Module::Build::Platform::Windows 0.42_35
+      Module::Build::Platform::aix 0.42_35
+      Module::Build::Platform::cygwin 0.42_35
+      Module::Build::Platform::darwin 0.42_35
+      Module::Build::Platform::os2 0.42_35
+      Module::Build::PodParser 0.42_35
+    requirements:
+      CPAN::Meta 2.142060
+      Cwd 0
+      Data::Dumper 0
+      ExtUtils::CBuilder 0.27
+      ExtUtils::Install 0
+      ExtUtils::InstallPaths 0.003
+      ExtUtils::Manifest 0
+      ExtUtils::Mkbootstrap 0
+      ExtUtils::ParseXS 2.21
+      File::Basename 0
+      File::Compare 0
+      File::Copy 0
+      File::Find 0
+      File::Path 0
+      File::Spec 0.82
+      Getopt::Long 0
+      Module::Metadata 1.000002
+      Perl::OSType 1
+      TAP::Harness 3.29
+      Text::Abbrev 0
+      Text::ParseWords 0
+      perl 5.006001
+      version 0.87
+  Module-Build-Tiny-0.051
+    pathname: L/LE/LEONT/Module-Build-Tiny-0.051.tar.gz
+    provides:
+      Module::Build::Tiny 0.051
+    requirements:
+      CPAN::Meta 0
+      DynaLoader 0
+      Exporter 5.57
+      ExtUtils::CBuilder 0
+      ExtUtils::Config 0.003
+      ExtUtils::Helpers 0.020
+      ExtUtils::Install 0
+      ExtUtils::InstallPaths 0.002
+      ExtUtils::ParseXS 0
+      File::Basename 0
+      File::Find 0
+      File::Path 0
+      File::Spec::Functions 0
+      Getopt::Long 2.36
+      JSON::PP 2
+      Pod::Man 0
+      TAP::Harness::Env 0
+      perl 5.006
+      strict 0
+      warnings 0
+  Object-Pad-0.820
+    pathname: P/PE/PEVANS/Object-Pad-0.820.tar.gz
+    provides:
+      Object::Pad 0.820
+      Object::Pad::ExtensionBuilder 0.820
+      Object::Pad::MOP::Class 0.820
+      Object::Pad::MOP::Field 0.820
+      Object::Pad::MOP::FieldAttr 0.820
+      Object::Pad::MOP::Method 0.820
+      Object::Pad::MetaFunctions 0.820
+    requirements:
+      ExtUtils::CBuilder 0
+      File::ShareDir 1.00
+      Module::Build 0.4004
+      XS::Parse::Keyword 0.47
+      XS::Parse::Keyword::Builder 0.48
+      XS::Parse::Sublike 0.35
+      XS::Parse::Sublike::Builder 0.35
+      perl 5.018
+  Sub-Exporter-Progressive-0.001013
+    pathname: F/FR/FREW/Sub-Exporter-Progressive-0.001013.tar.gz
+    provides:
+      Sub::Exporter::Progressive 0.001013
+    requirements:
+      ExtUtils::MakeMaker 0
+  Test-Simple-1.302210
+    pathname: E/EX/EXODIST/Test-Simple-1.302210.tar.gz
+    provides:
+      Test2 1.302210
+      Test2::API 1.302210
+      Test2::API::Breakage 1.302210
+      Test2::API::Context 1.302210
+      Test2::API::Instance 1.302210
+      Test2::API::InterceptResult 1.302210
+      Test2::API::InterceptResult::Event 1.302210
+      Test2::API::InterceptResult::Facet 1.302210
+      Test2::API::InterceptResult::Hub 1.302210
+      Test2::API::InterceptResult::Squasher 1.302210
+      Test2::API::Stack 1.302210
+      Test2::AsyncSubtest 1.302210
+      Test2::AsyncSubtest::Event::Attach 1.302210
+      Test2::AsyncSubtest::Event::Detach 1.302210
+      Test2::AsyncSubtest::Formatter 1.302210
+      Test2::AsyncSubtest::Hub 1.302210
+      Test2::Bundle 1.302210
+      Test2::Bundle::Extended 1.302210
+      Test2::Bundle::More 1.302210
+      Test2::Bundle::Simple 1.302210
+      Test2::Compare 1.302210
+      Test2::Compare::Array 1.302210
+      Test2::Compare::Bag 1.302210
+      Test2::Compare::Base 1.302210
+      Test2::Compare::Bool 1.302210
+      Test2::Compare::Custom 1.302210
+      Test2::Compare::DeepRef 1.302210
+      Test2::Compare::Delta 1.302210
+      Test2::Compare::Event 1.302210
+      Test2::Compare::EventMeta 1.302210
+      Test2::Compare::Float 1.302210
+      Test2::Compare::Hash 1.302210
+      Test2::Compare::Isa 1.302210
+      Test2::Compare::Meta 1.302210
+      Test2::Compare::Negatable 1.302210
+      Test2::Compare::Number 1.302210
+      Test2::Compare::Object 1.302210
+      Test2::Compare::OrderedSubset 1.302210
+      Test2::Compare::Pattern 1.302210
+      Test2::Compare::Ref 1.302210
+      Test2::Compare::Regex 1.302210
+      Test2::Compare::Scalar 1.302210
+      Test2::Compare::Set 1.302210
+      Test2::Compare::String 1.302210
+      Test2::Compare::Undef 1.302210
+      Test2::Compare::Wildcard 1.302210
+      Test2::Env 1.302210
+      Test2::Event 1.302210
+      Test2::Event::Bail 1.302210
+      Test2::Event::Diag 1.302210
+      Test2::Event::Encoding 1.302210
+      Test2::Event::Exception 1.302210
+      Test2::Event::Fail 1.302210
+      Test2::Event::Generic 1.302210
+      Test2::Event::Note 1.302210
+      Test2::Event::Ok 1.302210
+      Test2::Event::Pass 1.302210
+      Test2::Event::Plan 1.302210
+      Test2::Event::Skip 1.302210
+      Test2::Event::Subtest 1.302210
+      Test2::Event::TAP::Version 1.302210
+      Test2::Event::V2 1.302210
+      Test2::Event::Waiting 1.302210
+      Test2::EventFacet 1.302210
+      Test2::EventFacet::About 1.302210
+      Test2::EventFacet::Amnesty 1.302210
+      Test2::EventFacet::Assert 1.302210
+      Test2::EventFacet::Control 1.302210
+      Test2::EventFacet::Error 1.302210
+      Test2::EventFacet::Hub 1.302210
+      Test2::EventFacet::Info 1.302210
+      Test2::EventFacet::Info::Table 1.302210
+      Test2::EventFacet::Meta 1.302210
+      Test2::EventFacet::Parent 1.302210
+      Test2::EventFacet::Plan 1.302210
+      Test2::EventFacet::Render 1.302210
+      Test2::EventFacet::Trace 1.302210
+      Test2::Formatter 1.302210
+      Test2::Formatter::TAP 1.302210
+      Test2::Hub 1.302210
+      Test2::Hub::Interceptor 1.302210
+      Test2::Hub::Interceptor::Terminator 1.302210
+      Test2::Hub::Subtest 1.302210
+      Test2::IPC 1.302210
+      Test2::IPC::Driver 1.302210
+      Test2::IPC::Driver::Files 1.302210
+      Test2::Manual 1.302210
+      Test2::Manual::Anatomy 1.302210
+      Test2::Manual::Anatomy::API 1.302210
+      Test2::Manual::Anatomy::Context 1.302210
+      Test2::Manual::Anatomy::EndToEnd 1.302210
+      Test2::Manual::Anatomy::Event 1.302210
+      Test2::Manual::Anatomy::Hubs 1.302210
+      Test2::Manual::Anatomy::IPC 1.302210
+      Test2::Manual::Anatomy::Utilities 1.302210
+      Test2::Manual::Concurrency 1.302210
+      Test2::Manual::Contributing 1.302210
+      Test2::Manual::Testing 1.302210
+      Test2::Manual::Testing::Introduction 1.302210
+      Test2::Manual::Testing::Migrating 1.302210
+      Test2::Manual::Testing::Planning 1.302210
+      Test2::Manual::Testing::Todo 1.302210
+      Test2::Manual::Tooling 1.302210
+      Test2::Manual::Tooling::FirstTool 1.302210
+      Test2::Manual::Tooling::Formatter 1.302210
+      Test2::Manual::Tooling::Nesting 1.302210
+      Test2::Manual::Tooling::Plugin::TestExit 1.302210
+      Test2::Manual::Tooling::Plugin::TestingDone 1.302210
+      Test2::Manual::Tooling::Plugin::ToolCompletes 1.302210
+      Test2::Manual::Tooling::Plugin::ToolStarts 1.302210
+      Test2::Manual::Tooling::Subtest 1.302210
+      Test2::Manual::Tooling::TestBuilder 1.302210
+      Test2::Manual::Tooling::Testing 1.302210
+      Test2::Mock 1.302210
+      Test2::Plugin 1.302210
+      Test2::Plugin::BailOnFail 1.302210
+      Test2::Plugin::DieOnFail 1.302210
+      Test2::Plugin::ExitSummary 1.302210
+      Test2::Plugin::SRand 1.302210
+      Test2::Plugin::Times 1.302210
+      Test2::Plugin::UTF8 1.302210
+      Test2::Require 1.302210
+      Test2::Require::AuthorTesting 1.302210
+      Test2::Require::AutomatedTesting 1.302210
+      Test2::Require::EnvVar 1.302210
+      Test2::Require::ExtendedTesting 1.302210
+      Test2::Require::Fork 1.302210
+      Test2::Require::Module 1.302210
+      Test2::Require::NonInteractiveTesting 1.302210
+      Test2::Require::Perl 1.302210
+      Test2::Require::RealFork 1.302210
+      Test2::Require::ReleaseTesting 1.302210
+      Test2::Require::Threads 1.302210
+      Test2::Suite 1.302210
+      Test2::Todo 1.302210
+      Test2::Tools 1.302210
+      Test2::Tools::AsyncSubtest 1.302210
+      Test2::Tools::Basic 1.302210
+      Test2::Tools::Class 1.302210
+      Test2::Tools::ClassicCompare 1.302210
+      Test2::Tools::Compare 1.302210
+      Test2::Tools::Defer 1.302210
+      Test2::Tools::Encoding 1.302210
+      Test2::Tools::Event 1.302210
+      Test2::Tools::Exception 1.302210
+      Test2::Tools::Exports 1.302210
+      Test2::Tools::GenTemp 1.302210
+      Test2::Tools::Grab 1.302210
+      Test2::Tools::Mock 1.302210
+      Test2::Tools::Ref 1.302210
+      Test2::Tools::Refcount 1.302210
+      Test2::Tools::Spec 1.302210
+      Test2::Tools::Subtest 1.302210
+      Test2::Tools::Target 1.302210
+      Test2::Tools::Tester 1.302210
+      Test2::Tools::Tiny 1.302210
+      Test2::Tools::Warnings 1.302210
+      Test2::Util 1.302210
+      Test2::Util::ExternalMeta 1.302210
+      Test2::Util::Facets2Legacy 1.302210
+      Test2::Util::Grabber 1.302210
+      Test2::Util::Guard 1.302210
+      Test2::Util::HashBase 1.302210
+      Test2::Util::Importer 1.302210
+      Test2::Util::Ref 1.302210
+      Test2::Util::Sig 1.302210
+      Test2::Util::Stash 1.302210
+      Test2::Util::Sub 1.302210
+      Test2::Util::Table 1.302210
+      Test2::Util::Table::Cell 1.302210
+      Test2::Util::Table::LineBreak 1.302210
+      Test2::Util::Term 1.302210
+      Test2::Util::Times 1.302210
+      Test2::Util::Trace 1.302210
+      Test2::V0 1.302210
+      Test2::Workflow 1.302210
+      Test2::Workflow::BlockBase 1.302210
+      Test2::Workflow::Build 1.302210
+      Test2::Workflow::Runner 1.302210
+      Test2::Workflow::Task 1.302210
+      Test2::Workflow::Task::Action 1.302210
+      Test2::Workflow::Task::Group 1.302210
+      Test::Builder 1.302210
+      Test::Builder::Formatter 1.302210
+      Test::Builder::Module 1.302210
+      Test::Builder::Tester 1.302210
+      Test::Builder::Tester::Color 1.302210
+      Test::Builder::Tester::Tie 1.302210
+      Test::Builder::TodoDiag 1.302210
+      Test::More 1.302210
+      Test::Simple 1.302210
+      Test::Tester 1.302210
+      Test::Tester::Capture 1.302210
+      Test::Tester::CaptureRunner 1.302210
+      Test::Tester::Delegate 1.302210
+      Test::use::ok 1.302210
+      ok 1.302210
+    requirements:
+      B 0
+      Data::Dumper 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      File::Temp 0
+      Scalar::Util 1.13
+      Storable 0
+      Term::Table 0.013
+      Time::HiRes 0
+      overload 0
+      perl 5.006002
+      utf8 0
+  XS-Parse-Keyword-0.48
+    pathname: P/PE/PEVANS/XS-Parse-Keyword-0.48.tar.gz
+    provides:
+      XS::Parse::Infix 0.48
+      XS::Parse::Infix::Builder 0.48
+      XS::Parse::Keyword 0.48
+      XS::Parse::Keyword::Builder 0.48
+    requirements:
+      ExtUtils::CBuilder 0
+      ExtUtils::CChecker 0.11
+      ExtUtils::ParseXS 3.16
+      File::ShareDir 1.00
+      Module::Build 0.4004
+      perl 5.014
+  XS-Parse-Sublike-0.37
+    pathname: P/PE/PEVANS/XS-Parse-Sublike-0.37.tar.gz
+    provides:
+      Sublike::Extended 0.37
+      XS::Parse::Sublike 0.37
+      XS::Parse::Sublike::Builder 0.37
+    requirements:
+      ExtUtils::CBuilder 0
+      File::ShareDir 1.00
+      Module::Build 0.4004
+      perl 5.016
