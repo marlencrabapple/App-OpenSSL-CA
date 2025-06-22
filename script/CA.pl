@@ -10,7 +10,7 @@
 use utf8;
 use v5.40;
 
-use lib '.';
+use lib 'lib';
 
 use App::OpenSSL::CA;
 

@@ -17,6 +17,7 @@ cover_db/
 
 *.bak
 *.old
+!script/CA.pl.old
 *~
 *.swp
 *.o
