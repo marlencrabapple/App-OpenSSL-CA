@@ -1,4 +1,4 @@
-#!/usr/bin/env hsh
+#!/usr/bin/env ksh
 
 if [[ -z "$1" ]]; then
   echo -n "Enter a base value for the resulting keys' Common Name fields:"
