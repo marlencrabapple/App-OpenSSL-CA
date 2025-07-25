@@ -1,16 +1,20 @@
 use Object::Pad qw(:experimental(:all));
 
 package App::OpenSSL::CA;
-class App::OpenSSL::CA 0.01;
+
+class App::OpenSSL::CA : does(App::OpenSSL::CA::Base);
 
 use utf8;
 use v5.40;
 
 use Const::Fast;
-use List::Util 'any';
+use List::Util qw'first any';
 use IPC::Run3;
+use Data::Dumper;
 
-our $VERSION = "0.01";
+use App::OpenSSL::CA::Util;
+
+our $VERSION = 0.01;
 
 const our $verbose      => $ENV{VERBOSE} // 1;
 const our @OPENSSL_CMDS => qw'req ca pkcs12 x509 verify';
@@ -66,11 +70,11 @@ method $parse_extra {
         $extra{$arg} .= " " . shift;
     }
 
-    @argv = (@result)
-  }
+    @argv = (@result);
+}
 
-  # See if reason for a CRL entry is valid; exit if not.
-  method crl_reason_ok : common ($r) {
+# See if reason for a CRL entry is valid; exit if not.
+method crl_reason_ok : common ($r) {
     if (   $r eq 'unspecified'
         || $r eq 'keyCompromise'
         || $r eq 'CACompromise'
@@ -88,11 +92,11 @@ method $parse_extra {
     say STDERR "  affiliationChanged, superseded, cessationOfOperation";
     say STDERR "  certificateHold, removeFromCRL";
 
-    exit 1
-  }
+    exit 1;
+}
 
-  # Copy a PEM-format file; return like exit status (zero means ok)
-  method copy_pemfile : common ($infile, $outfile, $bound) {
+# Copy a PEM-format file; return like exit status (zero means ok)
+method copy_pemfile : common ($infile, $outfile, $bound) {
     my $found = 0;
 
     open my $infh,  '<', $infile  || die "Cannot open '$infile'",      $!;
@@ -183,8 +187,13 @@ EOF
         state @dirs =
           ( $CATOP, map { "$CATOP/$_" } qw(certs crl newcerts private) );
 
-        die "$_ exists.\nRemove old sub-tree to proceed,"
-          if any { -f "$CATOP/$_" } qw(index.txt serial);
+        if (
+            my ($fileexists) =
+            first { -f $_ } map { "$CATOP/$_" } qw(index.txt serial)
+          )
+        {
+            die "'$fileexists' exists.\nRemove old sub-tree to proceed.";
+        }
 
         foreach my $d (@dirs) {
             -d $d
@@ -334,18 +343,18 @@ EOF
         return 1;
     }
 
-    $ret
-};
+    $ret;
+}
 
-method $setup (@_argv){
+method $setup (@_argv) {
     @argv = (@_argv);
     $what = shift @argv || '';
     $self->$parse_extra;
-  }
+}
 
-  method cmd(@argv) {
+method cmd(@argv) {
     $setup->( $self, @argv );
-    $self->$run()
+    $self->$run();
 }
 
 method run : common (@argv) {

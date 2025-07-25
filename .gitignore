@@ -33,3 +33,7 @@ MYMETA.*
 .DS_Store
 ._*
 /.carmel
+vendor/
+.perl-version
+.zed
+.vscode

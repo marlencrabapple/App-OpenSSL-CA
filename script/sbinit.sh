@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-[[ "${SBINIT_DEBUG:-0}" -gt 0 ]] && set -x;
+[[ "${SBINIT_DEBUG:=${DEBUG:-0}}" -gt 0 ]] && set -x;
 
 if [[ -z "$1" ]]; then
   echo -n "Enter a base value for the resulting keys' Common Name fields:"
@@ -20,7 +20,7 @@ echo "$SUBJ_BASE"
 OUTDIR="${SUBJ_BASE:=${1:-${SBINIT_SUBJCN:-$(hostname)}}} secureboot - mkkeys.sh_$(date +%s)";
 mkdirout=$(perl -e 'use Cwd "abs_path"; use Data::Dumper; use Path::Tiny; use utf8; use v5.40; path(abs_path(join "", grep { $_ !~ /[-]{1,2}/ } @ARGV))->mkdir;  warn Dumper(\@ARGV); exit $?;' "$OUTDIR" || exit)
 
-#mkdir "$OUTDIR" || exit
+mkdir -p "$OUTDIR" || exit
 
 ( cd "$OUTDIR" || exit
 

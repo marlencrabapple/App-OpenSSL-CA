@@ -7,26 +7,53 @@ package SecureBootInit;
 class SecureBootInit;
 
 use utf8;
-use v5.40;
+use v5.42;
 
 use Data::Dumper;
 use IPC::Run3;
 use Getopt::Long;
 use Pod::Usage;
-use Carp;
 use Time::HiRes qw(gettimeofday);
 use Net::SSLeay;
-use MIME::Base64;
 
-#my $
+#field $cliopts :param;
+field $argv : param;
 
-method make_anonymous ( $salt = __CLASS__->epoch ) {
+field $cn : param;
+field $o : param  = undef;
+field $ou : param = undef;
+field $subj_base //= "/CN=$cn/";
+
+ADJUSTPARAMS($params) {
+    GetOptionsFromArray(
+        $argv,
+        "organization=s"                  => $o,
+        "ou|organization-unit|org-unit=s" => $ou,
+        "cn|common-name=s"                => $cn,
+        "subj|subject=s"                  => $subj_base
+    );
+
+    if ( my (%subj) = ( $subj =~ $SUBJ_PTN ) ) {
+        warn "Subject modified using overlapping options."
+          . "This can result in unintended behavior."
+          if $cn;
+
+        $cn //= $subj{cn};
+        $ou //= $subj{ou};
+        $o  //= $subj{o};
+    }
+    else {
+        $cn = __PACKAGE__->make_anonymous;
+    }
+}
+
+method make_anonymous : common ( $salt = __CLASS__->epoch ) {
     my $string = `hostname`;
     $string .= ",$salt";
 
-    my $secret = Net::SSLeay::gen_random(32);
+    my $secret = Net::SSLeay::SHA511( Net::SSLeay::gen_random(32) );
 
-    srand unpack "N", hide_data( $string, 4, "silly", );
+    srand unpack "N", hide_data( $string, 3, "silly" );
 
     cfg_expand(
         "%G% %W%",
@@ -97,8 +124,7 @@ method make_anonymous ( $salt = __CLASS__->epoch ) {
     );
 }
 
-sub epoch {
-    return join '', gettimeofday;
+method epoch : common ($join = '') {
+    join $join, gettimeofday;
 }
 
-mkdir ""
