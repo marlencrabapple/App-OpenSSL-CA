@@ -6,9 +6,8 @@ role App::OpenSSL::CA::Base;
 use utf8;
 use v5.40;
 
-ADJUSTPARAMS($params) {
+use Time::HiRes ();
 
+method epoch : common ($join = '') {
+    join $join, Time::HiRes::gettimeofday;
 }
-
-#method test : common (%opts);
-

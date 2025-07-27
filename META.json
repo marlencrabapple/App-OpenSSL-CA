@@ -43,8 +43,13 @@
       "runtime" : {
          "requires" : {
             "Const::Fast" : "0",
+            "IPC::Run3" : "0",
             "List::Util" : "0",
+            "Net::SSLeay" : "0",
             "Object::Pad" : "0",
+            "Path::Tiny" : "0",
+            "Syntax::Keyword::Defer" : "0",
+            "Syntax::Keyword::Dynamically" : "0",
             "perl" : "v5.40.0"
          }
       },
