@@ -84,7 +84,7 @@ ADJUSTPARAMS($params) {
         '<>' => sub ($cmd) {
             my ($method) = ( $cmd =~ $OPTION_RE );
 
-            __PACKAGE__->help("'$cmd' is not a valid option:")
+            $self->help("'$cmd' is not a valid option:")
               unless $method;
 
             $WHAT   = $cmd;
@@ -320,7 +320,7 @@ method newca {
     );
 
     if (
-        my ($fileexists) =
+        my $fileexists =
         first { -f $_ } map { "$CATOP/$_" } qw(index.txt serial)
       )
     {
