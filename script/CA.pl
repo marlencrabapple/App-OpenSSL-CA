@@ -15,6 +15,6 @@ use lib 'lib';
 use App::OpenSSL::CA;
 
 our $RET = 0;
-$RET = App::OpenSSL::CA->run(@ARGV);
+$RET = App::OpenSSL::CA->do( \@ARGV );
 
 exit $RET
