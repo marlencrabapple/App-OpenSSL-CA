@@ -8,7 +8,6 @@ use v5.40;
 
 use Syntax::Keyword::Dynamically;
 
-#use App::OpenSSL::CA::Util;
 sub rc4 : prototype($$;$) ( $message, $key, $skip = undef ) {
     my @s       = 0 .. 255;
     my @k       = unpack 'C*', $key;
@@ -20,7 +19,6 @@ sub rc4 : prototype($$;$) ( $message, $key, $skip = undef ) {
     my $y = 0;
 
     for my $x ( 0 .. 255 ) {
-        $y = ( $y + $s[$x] + $k[ $x % @k ] ) % 256;
         @s[ $x, $y ] = @s[ $y, $x ];
     }
 
@@ -61,7 +59,7 @@ method cfg_expand : common : prototype($%) ( $str, %grammar ) {
     $expanded;
 }
 
-method make_anonymous : common ( $salt = __CLASS__->epoch ) {
+method make_anonymous : common ( $salt = __PACKAGEs__->epoch ) {
     my $string = `hostname`;
     $string .= ",$salt";
 
@@ -136,4 +134,9 @@ method make_anonymous : common ( $salt = __CLASS__->epoch ) {
             "Thomas",    "Walter",    "Wesley",    "William"
         ],
     );
+}
+
+method __pkgfn__ : common ($pkgname = undef) {
+    $pkgname //= $class;
+    "$pkgname.pm" =~ s/::/\//rg;
 }

@@ -19,7 +19,6 @@ use IPC::Run3;
 
 use App::OpenSSL::CA::Base;
 
-Getopt::Long::Configure("auto_abbrev");
 Getopt::Long::Configure("pass_through");
 Getopt::Long::Configure("long_prefix_pattern=-");
 
@@ -59,14 +58,14 @@ const our $NEWP12     => $ENV{NEWP12}  // "newcert.p12";
 # Set CLI defaults from run environment
 field $cliopts : param(dest) {
 
-    my %cliopts = (
+    my %cliopts = {
         map {
             my $name = $_;
             my $val =
               first { $_ } @ENV{ map { uc "$_$name" } ( 'ca_', '' ) };
             $name => $val
         } qw(verbose debug)
-    );
+    };
 
     dmsg { ENV => \%ENV, cliopts => \%cliopts };
 
@@ -86,10 +85,10 @@ field $method : mutator;
 
 field $san;
 
-const our $OPTION_RE_STR => join '|', map {quotemeta $_ }
+const our $OPTION_RE_STR => join '|',
   qw(newcert newreq newreq-nodes xsign
   sign signCA signcert crl
-  newca pkcs12 verify revoke help h ? verbose);
+  newca pkcs12 verify revoke help  h ? verbose);
 
 const our $OPTION_RE => qr/^-($OPTION_RE_STR)$/;
 
@@ -107,15 +106,13 @@ ADJUSTPARAMS($params) {
 
         'subject=s%',
         'san|ubject-alt-name=s%',
-        'help|?',
-
+        'help|?|',
         'verbose',
 
         ( map { "extra-$_=s%" } @OPENSSL_CMDS ),
 
         '<>' => sub ($cmd) {
             my ($method) = ( $cmd =~ $OPTION_RE );
-            $method = 'help' if $$cliopts{help};
 
             dmsg {
                 cmd              => $cmd,
@@ -141,8 +138,6 @@ ADJUSTPARAMS($params) {
 
 method do : common ( $argv, %constructor ) {
     my $ca = $class->new( argv => $argv, %constructor );
-
-    dmsg {ca => $ca};
 
     my $method = $ca->method;
     $ca->$method;
@@ -384,7 +379,7 @@ method signcert {
         [
             @X509,   qw(-x509toreq -in),
             $NEWREQ, "-signkey",
-            $NEWKEY, qw(-out tmp.pem),
+            $NEWREQ, qw(-out tmp.pem),
             $$extra{x509}->@*
         ]
     );
