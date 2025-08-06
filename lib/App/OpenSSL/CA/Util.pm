@@ -8,7 +8,6 @@ use v5.40;
 
 use Syntax::Keyword::Dynamically;
 
-#use App::OpenSSL::CA::Util;
 sub rc4 : prototype($$;$) ( $message, $key, $skip = undef ) {
     my @s       = 0 .. 255;
     my @k       = unpack 'C*', $key;
@@ -136,4 +135,9 @@ method make_anonymous : common ( $salt = __CLASS__->epoch ) {
             "Thomas",    "Walter",    "Wesley",    "William"
         ],
     );
+}
+
+method __pkgfn__ : common ($pkgname = undef) {
+    $pkgname //= $class;
+    "$pkgname.pm" =~ s/::/\//rg;
 }
