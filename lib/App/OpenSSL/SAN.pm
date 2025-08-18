@@ -2,7 +2,7 @@ use Object::Pad ':experimental(:all)';
 
 package App::OpenSSL::SAN;
 
-class App::OpenSSL::SAN;
+class App::OpenSSL::SAN : does(App::OpenSSL::CA::Base);
 
 use utf8;
 use v5.40;

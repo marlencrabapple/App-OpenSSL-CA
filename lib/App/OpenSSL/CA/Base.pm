@@ -30,7 +30,8 @@ eval "use Devel::StackTrace::WithLexicals" if $DEBUG;
 
 field $debug = $DEBUG;
 
-APPLY {
+APPLY($meta) {
+
     #__PACKAGE__->dmsg( { INC => \@INC } );
 
     use utf8;
@@ -38,7 +39,8 @@ APPLY {
 
     use Exporter 'import';
 
-    our @EXPORT = @{__PACKAGE__::EXPORT}
+    our @EXPORT = @{__PACKAGE__::EXPORT};
+    #$meta->dmsg( { EXPORT => @EXPORT } )
 };
 
 ADJUSTPARAMS($param) {
@@ -55,7 +57,7 @@ multi sub epoch( $class = undef, $fmtstr = '', $eol = "\n" ) {
 }
 
 # Use Syntax::Keyword::MultiSub or prototypes if checking the caller isn't convenient,
-sub dmsg ( $class = undef, @msgs ) {
+multi sub dmsg ( $class = undef, @msgs ) {
     $DEBUG || return '';
 
     my @caller = caller 0;
@@ -85,12 +87,16 @@ sub dmsg ( $class = undef, @msgs ) {
     $out;
 }
 
+multi sub dmsg ( @msgs, %opts ) {
+    #&dmsg;
+}
+
 sub err : prototype($$%) (
     $msg_aref = ( [ $! // $S_UNKNOWNERR ] ),
     $exit     = ( $? ? $? >> 8 : 255 ), %opts
   )
 {
-    dmsg( { exit => $exit, msg_aref => $msg_aref, opts => \%opts } );
+   # dmsg( { exit => $exit, msg_aref => $msg_aref, opts => \%opts } );
 
     my $errstr = join "\n", map {
         my $str = $_ isa 'HASH' ? $$_{msg} : $_;
@@ -106,8 +112,7 @@ method help : common ( $error = "", $exit = ($? >> 8 || 0)) {
 
     warn "$error $$caller[0]:$$caller[1] line " . __LINE__ . "\n\n" if $error;
 
-    $class->dmsg( { caller => $caller, ( $error ? ( error => $error ) : () ) } )
-      if $DEBUG > 1;
+?
 
     warn <<EOF;
 Usage:

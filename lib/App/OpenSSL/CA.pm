@@ -2,7 +2,7 @@ use Object::Pad qw(:experimental(:all));
 
 package App::OpenSSL::CA;
 
-class App::OpenSSL::CA;
+class App::OpenSSL::CA : does(App::OpenSSL::CA::Util);
 
 our $VERSION = 0.01;
 
@@ -66,7 +66,7 @@ field $cliopts : param(dest) = {
             { $name => $val }
         } qw(verbose debug)
     };
-    dmsg { ENV => \%ENV, cliopts => \%cliopts };
+    __PACKAGE__->dmsg( { ENV => \%ENV, cliopts => \%cliopts } );
 
     \%cliopts
 };
@@ -74,7 +74,7 @@ field $cliopts : param(dest) = {
 field $argv : param;
 field $verbose = $ENV{verbose} // 1;
 field $extra : mutator;
-field $what : mutator;
+field $what  : mutator;
 
 #shift @$argv;    #= shift @ARGV // '';
 
