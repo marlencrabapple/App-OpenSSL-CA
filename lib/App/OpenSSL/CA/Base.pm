@@ -37,7 +37,6 @@ APPLY {
     use v5.40;
 
     use Exporter 'import';
-
     our @EXPORT = @{__PACKAGE__::EXPORT}
 };
 
@@ -90,7 +89,7 @@ sub err : prototype($$%) (
     $exit     = ( $? ? $? >> 8 : 255 ), %opts
   )
 {
-    dmsg( { exit => $exit, msg_aref => $msg_aref, opts => \%opts } );
+    __PACKAGE__->dmsg( { exit => $exit, msg_aref => $msg_aref, opts => \%opts } );
 
     my $errstr = join "\n", map {
         my $str = $_ isa 'HASH' ? $$_{msg} : $_;
@@ -118,3 +117,4 @@ Usage:
 EOF
     exit $exit;
 }
+

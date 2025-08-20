@@ -66,7 +66,7 @@ field $cliopts : param(dest) = {
             { $name => $val }
         } qw(verbose debug)
     };
-    dmsg { ENV => \%ENV, cliopts => \%cliopts };
+    dmsg({ ENV => \%ENV, cliopts => \%cliopts });
 
     \%cliopts
 };
