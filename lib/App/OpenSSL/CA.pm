@@ -220,9 +220,9 @@ method copy_pemfile ( $infile, $outfile, $bound, %opts ) {
     open( my $OUT, '>', "$outfile" )
       || __PACKAGE__->err("Cannot write to '$outfile': $!");
 
-    while (<$IN>) {
-        $found = 1    if /^-----BEGIN.*$bound/;
-        print $OUT $_ if $found;
+    while ( my $line = <$IN> ) {
+        $found = 1 if $line =~ /^-----BEGIN.*$bound/;
+        print $OUT $line icpf $found;
         $found = 2, last if /^-----END.*$bound/;
     }
 
