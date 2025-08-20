@@ -33,6 +33,7 @@
       },
       "develop" : {
          "requires" : {
+            "App::FatPacker" : "0",
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion::Fast" : "0.04",
             "Test::PAUSE::Permissions" : "0.07",
@@ -45,6 +46,8 @@
             "Const::Fast" : "0",
             "Const::Fast::Exporter" : "0",
             "Devel::StackTrace::WithLexicals" : "0",
+            "Exporter::Shiny" : "0",
+            "Exporter::Tiny" : "0",
             "IPC::Run3" : "0",
             "List::Util" : "0",
             "Net::SSLeay" : "0",
@@ -55,6 +58,8 @@
             "Syntax::Keyword::MultiSub" : "0",
             "Time::Moment" : "0",
             "Time::Piece" : "0",
+            "meta" : "0",
+            "overload" : "0",
             "perl" : "v5.40.0"
          }
       },

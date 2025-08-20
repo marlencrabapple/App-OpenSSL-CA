@@ -74,7 +74,7 @@ field $cliopts : param(dest) = {
 field $argv : param;
 field $verbose = $ENV{verbose} // 1;
 field $extra : mutator;
-field $what : mutator;
+field $what  : mutator;
 
 #shift @$argv;    #= shift @ARGV // '';
 
