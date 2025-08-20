@@ -7,7 +7,7 @@ package SecureBootInit;
 
 class SecureBootInit : does(App::OpenSSL::CA::Base);
 
-use utf8;
+use utf8
 use v5.40;
 
 use IPC::Run3;
@@ -17,7 +17,7 @@ use Time::HiRes qw(gettimeofday);
 use Net::SSLeay;
 use Const::Fast;
 
-use App::OpenSSL::CA::Util;
+#use App::OpenSSL::CA::Util;
 
 const our $SUBJBASE_RE => qr\/?(CN|OU|O){1}([^/]+)/?\;
 
@@ -48,6 +48,6 @@ ADJUSTPARAMS($params) {
         $o  //= $subj{o};
     }
     else {
-        $cn = __CLASS__->make_anonymous;
+        $cn = __PACKAGE__->make_anonymous;
     }
 }
