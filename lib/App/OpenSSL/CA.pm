@@ -56,7 +56,7 @@ const our $NEWCERT    => $ENV{NEWCERT} // "newcert.pem";
 const our $NEWP12     => $ENV{NEWP12}  // "newcert.p12";
 
 # Set CLI defaults from run environment
-field $cliopts : param(dest) = {
+field $cliopts : param(dest) {
 
     my %cliopts = {
         map {
@@ -66,7 +66,9 @@ field $cliopts : param(dest) = {
             { $name => $val }
         } qw(verbose debug)
     };
-    dmsg({ ENV => \%ENV, cliopts => \%cliopts });
+
+
+    __PACKAGE__->dmsg({ ENV => \%ENV, cliopts => \%cliopts });
 
     \%cliopts
 };
