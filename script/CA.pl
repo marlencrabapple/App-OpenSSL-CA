@@ -10,8 +10,6 @@
 use utf8;
 use v5.40;
 
-use lib 'lib';
-
 use App::OpenSSL::CA;
 
 our $RET = 0;

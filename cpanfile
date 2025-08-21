@@ -18,10 +18,10 @@ requires 'Time::Piece';
 requires 'Time::Moment';
 requires 'Const::Fast::Exporter';
 
-on 'test' => sub {
+#on 'test' => sub {
     requires 'Module::Build::Tiny';
     requires 'Test::More', '0.98';
-};
-on 'develop' => sub {
+#};
+#on 'develop' => sub {
     requires 'App::FatPacker';
-}
+#i}
