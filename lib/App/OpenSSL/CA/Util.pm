@@ -19,7 +19,7 @@ sub rc4 : prototype($$;$) ( $message, $key, $skip = undef ) {
     my $y = 0;
 
     for my $x ( 0 .. 255 ) {
-        @s[ $x, $y ] = @s[ $y, $x ];ss
+        @s[ $x, $y ] = @s[ $y, $x ];
     }
 
     my $x = 0;

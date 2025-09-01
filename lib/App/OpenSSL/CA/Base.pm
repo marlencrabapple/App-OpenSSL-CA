@@ -8,18 +8,17 @@ use v5.40;
 
 use Const::Fast::Exporter;
 use Data::Dumper;
-use Time::HiRes ();
+use Time::HiRes;
 use Time::Piece;
 use Time::Moment;
 use Syntax::Keyword::Dynamically;
-use Syntax::Keyword::MultiSub;
-
-use Exporter 'import';
+#use Exporter 'import';
 
 use subs qw(dmsg epoch err);
 
 BEGIN {
-    use Exporter 'import';
+    require Exporter;
+    our @ISA = qw(Exporter);
     our @EXPORT = qw(dmsg epoch err);
 }
 
@@ -28,11 +27,9 @@ const our $S_UNKNOWNERR => 'Unknown fatal error';
 
 eval "use Devel::StackTrace::WithLexicals" if $DEBUG;
 
-field $debug = $DEBUG;
+field $debug :accessor :param = $DEBUG;
 
-APPLY {
-    #__PACKAGE__->dmsg( { INC => \@INC } );
-
+APPLY ($mop) {
     use utf8;
     use v5.40;
 
@@ -41,20 +38,16 @@ APPLY {
 };
 
 ADJUSTPARAMS($param) {
-
-    # ...
+    use utf8;
+    use v5.40;
+    our @EXPORT = qw(dmsg epoch err);
 }
 
-multi sub epoch( $class = undef, $join = '', $eol = "\n" ) {
+sub epoch( $join = '', %opts) {
     join $join, Time::HiRes::gettimeofday;
 }
 
-multi sub epoch( $class = undef, $fmtstr = '', $eol = "\n" ) {
-    sprintf( "$fmtstr$eol" // "%d%d$eol", Time::HiRes::gettimeofday );
-}
-
-# Use Syntax::Keyword::MultiSub or prototypes if checking the caller isn't convenient,
-sub dmsg ( $class = undef, @msgs ) {
+sub dmsg ( @msgs ) {
     $DEBUG || return '';
 
     my @caller = caller 0;
@@ -84,18 +77,18 @@ sub dmsg ( $class = undef, @msgs ) {
     $out;
 }
 
-sub err : prototype($$%) (
-    $msg_aref = ( [ $! // $S_UNKNOWNERR ] ),
+sub err : prototype($;$%) (
+    $msg = ( $! // $S_UNKNOWNERR ),
     $exit     = ( $? ? $? >> 8 : 255 ), %opts
   )
 {
-    __PACKAGE__->dmsg( { exit => $exit, msg_aref => $msg_aref, opts => \%opts } );
+    dmsg( { exit => $exit, msg => $msg, opts => \%opts } );
 
-    my $errstr = join "\n", map {
+    my $errstr = $msg isa 'ARRAY' ? join "\n", map {
         my $str = $_ isa 'HASH' ? $$_{msg} : $_;
         $str = $S_UNKNOWNERR if $str =~ /^[0-9]+$/ && $str == 0;
         $str
-    } @$msg_aref;
+    } @$msg : $msg;
 
     die "ERROR: $errstr ($exit)";
 }

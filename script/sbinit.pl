@@ -34,8 +34,9 @@ ADJUSTPARAMS($params) {
         $argv,
         "organization=s"                  => $o,
         "ou|organization-unit|org-unit=s" => $ou,
-        "cn|common-name=s"                => $cn,
+        "cn|common-name=s"              => $cn,
         "subj|subject=s"                  => $subj_base
+    GetOptionsFromArray(
     );
 
     if ( my (%subj) = ( $subj =~ $SUBJBASE_RE ) ) {

@@ -2,7 +2,7 @@ use Object::Pad qw(:experimental(:all));
 
 package App::OpenSSL::CA;
 
-class App::OpenSSL::CA;
+class App::OpenSSL::CA : does(App::OpenSSL::CA::Base);
 
 our $VERSION = 0.01;
 
@@ -17,8 +17,9 @@ use List::Util qw'first any';
 use Path::Tiny;
 use IPC::Run3;
 
-use App::OpenSSL::CA::Util;
+use App::OpenSSL::CA::Base;
 
+Getopt::Long::Configure("auto_abbrev");
 Getopt::Long::Configure("pass_through");
 Getopt::Long::Configure("long_prefix_pattern=-");
 
@@ -58,17 +59,16 @@ const our $NEWP12     => $ENV{NEWP12}  // "newcert.p12";
 # Set CLI defaults from run environment
 field $cliopts : param(dest) {
 
-    my %cliopts = {
+    my %cliopts = (
         map {
             my $name = $_;
             my $val =
-              first { $_ } \%ENV->@[ ( map { "$_$name" } ( 'ca_', '' ) ) ];
-            { $name => $val }
+              first { $_ } @ENV{ map { uc "$_$name" } ( 'ca_', '' ) };
+            $name => $val
         } qw(verbose debug)
-    };
+    );
 
-
-    __PACKAGE__->dmsg({ ENV => \%ENV, cliopts => \%cliopts });
+    dmsg { ENV => \%ENV, cliopts => \%cliopts };
 
     \%cliopts
 };
@@ -78,20 +78,18 @@ field $verbose = $ENV{verbose} // 1;
 field $extra : mutator;
 field $what  : mutator;
 
-#shift @$argv;    #= shift @ARGV // '';
-
 field $ret : reader = 0;    # TODO: either
                             #  - alias this to $? in err or
                             #  - exit $ret in DESTROY?
 
-field $method : accessor;
+field $method : mutator;
 
 field $san;
 
-const our $OPTION_RE_STR => join '|',
+const our $OPTION_RE_STR => join '|', map {quotemeta $_ }
   qw(newcert newreq newreq-nodes xsign
   sign signCA signcert crl
-  newca pkcs12 verify revoke help verbose);
+  newca pkcs12 verify revoke help h ? verbose);
 
 const our $OPTION_RE => qr/^-($OPTION_RE_STR)$/;
 
@@ -103,83 +101,52 @@ ADJUSTPARAMS($params) {
     GetOptionsFromArray(
         $argv, $cliopts,
 
+        # 'newcert' 'newreq' 'newreq-nodes' 'xsign'
+        #   'sign' 'signCA' 'signcert' 'crl'
+        #   'newca' 'pkcs12' 'verify' 'revoke'
+
         'subject=s%',
         'san|ubject-alt-name=s%',
-        'help|?|',
+        'help|?',
+
         'verbose',
 
         ( map { "extra-$_=s%" } @OPENSSL_CMDS ),
 
         '<>' => sub ($cmd) {
             my ($method) = ( $cmd =~ $OPTION_RE );
+            $method = 'help' if $$cliopts{help};
 
-            __PACKAGE__->dmsg(
-                {
-                    cmd              => $cmd,
-                    method           => $method,
-                    '$OPTION_RE_STR' => $OPTION_RE_STR,
-                    '$OPTION_RE'     => $OPTION_RE
-                }
-            );
+            dmsg {
+                cmd              => $cmd,
+                method           => $method,
+                '$OPTION_RE_STR' => $OPTION_RE_STR,
+                '$OPTION_RE'     => $OPTION_RE
+            };
 
             __PACKAGE__->help("'$cmd' is not a valid option:")
               unless $method;
 
-            my $what_obj = (
-                class {
-                    use Const::Fast;
-
-                    field $val_orig;
-                    field $val : reader : param;
-                    field $prefix : param : reader = '-'
-                      ; # TODO: For set method use some sort of field/slot attribute to update the regexp (below) as well
-                        #  - Prefix in calling method is prepending two $prefix
-                    field $preval_ptn  = qr/^$prefix{1,2}?([a-z]+)$/i;
-                    field $plainopt_re = /^[\s\r\n]?$prefix(.+)[\s\r\n]?$/;
-
-                    ADJUSTPARAMS($params) {
-                        $val_orig = $val;
-                        App::OpenSSL::CA->dmsg( { prefix_ptn => $preval_ptn } );
-
-                        $val =~ s/$preval_ptn/$1/r;
-                    }
-
-                    method as_cli ( $prefix = $prefix ) {
-                        $val_orig;
-                    }
-
-                    method plain ( $value = (), %opts ) {
-                        $value =~ $plainopt_re;
-                        $1;
-                    }
-                }
-            )->new( val => $cmd );
-
-            $what = $what_obj->plain;
-
             $self->method = $method;
 
-            __PACKAGE__->dmsg(
-                cliopts  => $cliopts,
-                argv     => $argv,
-                what_obj => $what_obj,
-                what     => $what,
-                method   => $method
-            );
+            dmsg {
+                cliopts => $cliopts,
+                argv    => $argv,
+                what    => $what,
+                method  => $method
+            };
         }
     );
-
-    __PACKAGE__->help("'$what' is not a valid option:")
-      unless $method;
 }
 
 method do : common ( $argv, %constructor ) {
     my $ca = $class->new( argv => $argv, %constructor );
 
-    # my $method = $ca->METHOD;
-    # $ca->$method;
-    # $ca->RET;
-    $ca->method->();
+    dmsg {ca => $ca};
+
+    my $method = $ca->method;
+    $ca->$method;
+    $ca->ret;
 }
 
 method touch ( $file, %opts ) {
@@ -218,14 +185,14 @@ method copy_pemfile ( $infile, $outfile, $bound, %opts ) {
     $opts{iolayer} //= "";
 
     open( my $IN, '<' . $opts{iolayer}, $infile )
-      || __PACKAGE__->err("Cannot open '$infile' for reading: $!");
+      || err "Cannot open '$infile' for reading: $!", $?;
     open( my $OUT, '>', "$outfile" )
-      || __PACKAGE__->err("Cannot write to '$outfile': $!");
+      || err "Cannot write to '$outfile': $!", $?;
 
     while ( my $line = <$IN> ) {
-        $found = 1 if $line =~ /^-----BEGIN.*$bound/;
-        print $OUT $line icpf $found;
-        $found = 2, last if /^-----END.*$bound/;
+        $found = 1       if $line =~ /^-----BEGIN.*$bound/;
+        print $OUT $line if $found;
+        $found = 2, last if $line = !/^-----END.*$bound/;
     }
 
     close $IN;
@@ -309,16 +276,14 @@ method newca {
         first { -f $_ } map { "$CATOP/$_" } qw(index.txt serial)
       )
     {
-        __PACKAGE__->err(
-            "'$fileexists' exists.\nRemove old sub-tree to proceed.");
+        err "'$fileexists' exists.\nRemove old sub-tree to proceed.", $?;
     }
 
     foreach my $d (@dirs) {
         -d $d
           ? warn "Directory $d exists"
           : mkdir $d
-          or __PACKAGE__->err(
-            ["Can't make directory at $d:\n> mkdir exited with $? - $!"] );
+          or err "Can't make directory at $d:\n> mkdir exited with $? - $!", $?;
     }
 
     $self->touch("$CATOP/index.txt");
@@ -419,7 +384,7 @@ method signcert {
         [
             @X509,   qw(-x509toreq -in),
             $NEWREQ, "-signkey",
-            $NEWREQ, qw(-out tmp.pem),
+            $NEWKEY, qw(-out tmp.pem),
             $$extra{x509}->@*
         ]
     );
