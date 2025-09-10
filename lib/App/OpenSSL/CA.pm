@@ -28,11 +28,13 @@ const our @OPENSSL_CMDS => qw(req ca pkcs12 x509 verify);
 const our $OPENSSL        => $ENV{'OPENSSL'} //= "openssl";
 const our @OPENSSL        => split /[\s\n\r]+/, $OPENSSL;
 const our $OPENSSL_CONFIG => $ENV{"OPENSSL_CONFIG"} // "";
-const our @OPENSSL_CONFIG => $OPENSSL_CONFIG =~ /^[\s\r\n]*
+const our @OPENSSL_CONFIG => (
+    '-config', $OPENSSL_CONFIG =~ /^[\s\r\n]*
         ([^=\:\s])
         [^=\:\s]1
         ([^=\:\s])
-    [\s\r\n]*$/x;
+    [\s\r\n]*$/xx
+);
 
 # Command invocations.
 const our @REQ    => ( @OPENSSL, "req", @OPENSSL_CONFIG );
@@ -68,7 +70,7 @@ field $cliopts : param(dest) {
         } qw(verbose debug)
     );
 
-    dmsg { ENV => \%ENV, cliopts => \%cliopts };
+    dmsg( { ENV => \%ENV, cliopts => \%cliopts } );
 
     \%cliopts
 };
@@ -86,7 +88,8 @@ field $method : mutator;
 
 field $san;
 
-const our $OPTION_RE_STR => join '|', map {quotemeta $_ }
+const our $OPTION_RE_STR => join '|',
+  map { quotemeta $_ }
   qw(newcert newreq newreq-nodes xsign
   sign signCA signcert crl
   newca pkcs12 verify revoke help h ? verbose);
@@ -129,12 +132,14 @@ ADJUSTPARAMS($params) {
 
             $self->method = $method;
 
-            dmsg {
-                cliopts => $cliopts,
-                argv    => $argv,
-                what    => $what,
-                method  => $method
-            };
+            dmsg(
+                {
+                    cliopts => $cliopts,
+                    argv    => $argv,
+                    what    => $what,
+                    method  => $method
+                }
+            );
         }
     );
 }
@@ -142,7 +147,7 @@ ADJUSTPARAMS($params) {
 method do : common ( $argv, %constructor ) {
     my $ca = $class->new( argv => $argv, %constructor );
 
-    dmsg {ca => $ca};
+    dmsg( { ca => $ca } );
 
     my $method = $ca->method;
     $ca->$method;

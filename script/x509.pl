@@ -3,7 +3,7 @@ use Object::Pad ':experimental(:all)';
 
 package x509::pl 0.01;
 
-class x509::pl;
+role x509::pl : does(App::OpenSSL::CA::Util);
 
 use lib 'lib';
 
@@ -13,10 +13,10 @@ use v5.40;
 use IPC::Run3;
 use Const::Fast;
 use Net::SSLeay;
-
-use Data::Dumper;
 use Getopt::Long;
 use Syntax::Keyword::Defer;
+
+use App::OpenSSL::CA::Util;
 
 const our %DIGESTALGO => {
 
@@ -39,15 +39,15 @@ const our %KEYALGO => {
     },
 };
 
-field $cn : param;
-field $org : param(org);
+field $cn      : param;
+field $org     : param(org);
 field $orgunit : param(ou);
 
 #field $outfstub : param(offnf); # ...
-field $outfmt_fn : param(out_fn_fmtstr);
-field $pem : param         = 1;
-field $key_pw : param      = undef;
-field $key_algo : param    = $KEYALGO{P521};
+field $outfmt_fn   : param(out_fn_fmtstr);
+field $pem         : param = 1;
+field $key_pw      : param = undef;
+field $key_algo    : param = $KEYALGO{P521};
 field $digest_also : param = $DIGESTALGO{SHA256};
 
 field $san : param(san) //=
@@ -58,8 +58,8 @@ ADJUSTPARAMS($params) {
 };
 
 class CertFile {
-    field $cert : param : reader   = undef;
-    field $key : param : reader    = undef;
+    field $cert   : param : reader = undef;
+    field $key    : param : reader = undef;
     field $pkcs12 : param : reader = undef;
 
     ADJUSTPARAMS($params) {
@@ -69,8 +69,8 @@ class CertFile {
 class SAN {
     use Object::Pad ':experimental(:all)';
 
-    field $ip : param    = [q'127.0.0.1 ::1'];
-    field $dns : param   = [qw(localhost)];
+    field $ip    : param = [q'127.0.0.1 ::1'];
+    field $dns   : param = [qw(localhost)];
     field $email : param = undef;
 
     ADJUSTPARAMS($params) {
@@ -153,3 +153,53 @@ method mint_certificate ($out) {
 #        $fmtstr .= sprintf( "%s=%s,", $type, join( ',', $resource->@* ) );
 #    }
 #}
+
+package main;
+
+role x509::pl::run : does(x509::pl) {
+    use utf8;
+    use v5.40;
+
+    use IPC::Run3;
+
+    field $out = [];
+    field $in  = \undef;
+    field $err = [];
+
+    method $writeout ( $line, %opts ) {
+        chomp $line;
+        say $line;
+        push @$out, $line;
+    }
+
+    method $writeerr ( $line, %opts ) {
+        chomp $line;
+        warn $line;
+        dmsg($line);
+        push @$err, $line;
+    }
+
+    method cmd (
+        $cmd_aref, $in = \undef, $out = \$writeout, $err = \$writeerr
+      )
+    {
+        run3( $cmd_aref, $in, $out, $err );
+    }
+
+  }
+
+  class main : does(x509::pl::run);
+
+field $cliopts : param(dest) = {};
+
+ADJUSTPARAMS($params) {
+
+}
+
+method run : common ($argv = \@ARGV, %opts) {
+    my $cliopts = {};
+    my $self    = $class->new( argv => $argv, dest => $cliopts );
+
+}
+
+main->new->run( \@ARGV )
