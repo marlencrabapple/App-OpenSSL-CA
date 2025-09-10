@@ -9,6 +9,7 @@ our $VERSION = 0.01;
 use utf8;
 use v5.40;
 
+use Cwd;
 use Getopt::Long 'GetOptionsFromArray';
 use Data::Dumper;
 use Encode qw(encode decode);
@@ -25,9 +26,10 @@ Getopt::Long::Configure("long_prefix_pattern=-");
 
 const our @OPENSSL_CMDS => qw(req ca pkcs12 x509 verify);
 
-const our $OPENSSL        => $ENV{'OPENSSL'} //= "openssl";
-const our @OPENSSL        => split /[\s\n\r]+/, $OPENSSL;
-const our $OPENSSL_CONFIG => $ENV{"OPENSSL_CONFIG"} // "";
+const our $OPENSSL => $ENV{'OPENSSL'} //= "openssl";
+const our @OPENSSL => split /[\s\n\r]+/, $OPENSSL;
+const our $OPENSSL_CONFIG => $ENV{"OPENSSL_CONFIG"}
+  // Cwd::abs_path('./root-ca.1.pem');
 const our @OPENSSL_CONFIG => (
     '-config', $OPENSSL_CONFIG =~ /^[\s\r\n]*
         ([^=\:\s])
