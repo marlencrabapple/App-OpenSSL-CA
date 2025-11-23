@@ -12,13 +12,14 @@ use Time::HiRes;
 use Time::Piece;
 use Time::Moment;
 use Syntax::Keyword::Dynamically;
-#use Exporter 'import';
+
+use Exporter 'import';
 
 use subs qw(dmsg epoch err);
 
 BEGIN {
     require Exporter;
-    our @ISA = qw(Exporter);
+    our @ISA    = qw(Exporter);
     our @EXPORT = qw(dmsg epoch err);
 }
 
@@ -27,27 +28,29 @@ const our $S_UNKNOWNERR => 'Unknown fatal error';
 
 eval "use Devel::StackTrace::WithLexicals" if $DEBUG;
 
-field $debug :accessor :param = $DEBUG;
+field $debug : accessor : param = $DEBUG;
+field $env : accessor : param(envstash) : inheritable = {};
 
-APPLY ($mop) {
-    use utf8;
-    use v5.40;
+# APPLY($mop) {
+#     use utf8;
+#     use v5.40;
 
-    use Exporter 'import';
-    our @EXPORT = @{__PACKAGE__::EXPORT}
-};
+#     use Exporter 'import';
+#     our @EXPORT = @{__PACKAGE__::EXPORT}
+# };
 
 ADJUSTPARAMS($param) {
     use utf8;
     use v5.40;
-    our @EXPORT = qw(dmsg epoch err);
+    use Exporter 'import';
+    our @EXPORT =@{__PACKAGE__::EXPORT}
 }
 
-sub epoch( $join = '', %opts) {
+sub epoch( $join = '', %opts ) {
     join $join, Time::HiRes::gettimeofday;
 }
 
-sub dmsg ( @msgs ) {
+sub dmsg (@msgs) {
     $DEBUG || return '';
 
     my @caller = caller 0;
@@ -78,27 +81,29 @@ sub dmsg ( @msgs ) {
 }
 
 sub err : prototype($;$%) (
-    $msg = ( $! // $S_UNKNOWNERR ),
-    $exit     = ( $? ? $? >> 8 : 255 ), %opts
+    $msg  = ( $! // $S_UNKNOWNERR ),
+    $exit = ( $? ? $? >> 8 : 255 ), %opts
   )
 {
     dmsg( { exit => $exit, msg => $msg, opts => \%opts } );
 
-    my $errstr = $msg isa 'ARRAY' ? join "\n", map {
+    my $errstr = $msg isa 'ARRAY'
+      ? join "\n", map {
         my $str = $_ isa 'HASH' ? $$_{msg} : $_;
         $str = $S_UNKNOWNERR if $str =~ /^[0-9]+$/ && $str == 0;
         $str
-    } @$msg : $msg;
+      } @$msg
+      : $msg;
 
     die "ERROR: $errstr ($exit)";
 }
 
-method help : common ( $error = "", $exit = ($? >> 8 || 0)) {
+method help ( $error = "", $exit = ($? >> 8 || 0)) {
     my $caller = [ caller 0 ];
 
     warn "$error $$caller[0]:$$caller[1] line " . __LINE__ . "\n\n" if $error;
 
-    $class->dmsg( { caller => $caller, ( $error ? ( error => $error ) : () ) } )
+    dmsg( { caller => $caller, ( $error ? ( error => $error ) : () ) } )
       if $DEBUG > 1;
 
     warn <<EOF;

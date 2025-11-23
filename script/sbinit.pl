@@ -7,7 +7,7 @@ package SecureBootInit;
 
 class SecureBootInit : does(App::OpenSSL::CA::Base);
 
-use utf8
+use utf8;
 use v5.40;
 
 use IPC::Run3;
@@ -36,7 +36,7 @@ ADJUSTPARAMS($params) {
         "ou|organization-unit|org-unit=s" => $ou,
         "cn|common-name=s"              => $cn,
         "subj|subject=s"                  => $subj_base
-    GetOptionsFromArray(
+        
     );
 
     if ( my (%subj) = ( $subj =~ $SUBJBASE_RE ) ) {

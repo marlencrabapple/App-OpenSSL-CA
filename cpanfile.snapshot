@@ -679,12 +679,12 @@ DISTRIBUTIONS
       File::ShareDir 1.00
       Module::Build 0.4004
       perl 5.014
-  XS-Parse-Sublike-0.38
-    pathname: P/PE/PEVANS/XS-Parse-Sublike-0.38.tar.gz
+  XS-Parse-Sublike-0.39
+    pathname: P/PE/PEVANS/XS-Parse-Sublike-0.39.tar.gz
     provides:
-      Sublike::Extended 0.38
-      XS::Parse::Sublike 0.38
-      XS::Parse::Sublike::Builder 0.38
+      Sublike::Extended 0.39
+      XS::Parse::Sublike 0.39
+      XS::Parse::Sublike::Builder 0.39
     requirements:
       ExtUtils::CBuilder 0
       File::ShareDir 1.00

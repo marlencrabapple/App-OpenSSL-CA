@@ -1,6 +1,6 @@
 [default]
-name                    = sub-ca
-domain_suffix           = example.com
+name                    = sub-ca-s1
+domain_suffix           = $ENV::DOMAINSUFFIX
 aia_url                 = http://$name.$domain_suffix/$name.crt
 crl_url                 = http://$name.$domain_suffix/$name.crl
 ocsp_url                = http://ocsp.$name.$domain_suffix:9081
@@ -13,7 +13,7 @@ organizationName        = "The Internette"
 commonName              = "cincotuf Intermediate CA RSA G1"
 
 [ca_default]
-home                    = .
+home                    = $ENV::CATOP
 database                = $home/db/index
 serial                  = $home/db/serial
 crlnumber               = $home/db/crlnumber

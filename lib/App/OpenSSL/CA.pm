@@ -24,12 +24,13 @@ Getopt::Long::Configure("auto_abbrev");
 Getopt::Long::Configure("pass_through");
 Getopt::Long::Configure("long_prefix_pattern=-");
 
+const our $VERBOSE => 1;
 const our @OPENSSL_CMDS => qw(req ca pkcs12 x509 verify);
 
 const our $OPENSSL => $ENV{'OPENSSL'} //= "openssl";
 const our @OPENSSL => split /[\s\n\r]+/, $OPENSSL;
 const our $OPENSSL_CONFIG => $ENV{"OPENSSL_CONFIG"}
-  // Cwd::abs_path('./root-ca.1.pem');
+  || Cwd::abs_path('./root-ca.1.pem');
 const our @OPENSSL_CONFIG => (
     '-config', $OPENSSL_CONFIG =~ /^[\s\r\n]*
         ([^=\:\s])
@@ -60,25 +61,11 @@ const our $NEWREQ     => $ENV{NEWREQ}  // "newreq.pem";
 const our $NEWCERT    => $ENV{NEWCERT} // "newcert.pem";
 const our $NEWP12     => $ENV{NEWP12}  // "newcert.p12";
 
-# Set CLI defaults from run environment
-field $cliopts : param(dest) {
-
-    my %cliopts = (
-        map {
-            my $name = $_;
-            my $val =
-              first { $_ } @ENV{ map { uc "$_$name" } ( 'ca_', '' ) };
-            $name => $val
-        } qw(verbose debug)
-    );
-
-    dmsg( { ENV => \%ENV, cliopts => \%cliopts } );
-
-    \%cliopts
-};
-
 field $argv : param;
-field $verbose = $ENV{verbose} // 1;
+field $cliopts : param(dest) = {};
+
+
+field $verbose = $VERBOSE;
 field $extra : mutator;
 field $what  : mutator;
 
@@ -151,7 +138,7 @@ method do : common ( $argv, %constructor ) {
 
     dmsg( { ca => $ca } );
 
-    my $method = $ca->method;
+    my $method = $ca->method // 'help';
     $ca->$method;
     $ca->ret;
 }

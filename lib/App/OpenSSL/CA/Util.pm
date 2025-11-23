@@ -2,11 +2,26 @@ use Object::Pad ':experimental(:all)';
 
 package App::OpenSSL::CA::Util;
 role App::OpenSSL::CA::Util : does(App::OpenSSL::CA::Base);
-
-use utf8;
 use v5.40;
 
+use parent 'Exporter';
+use List::Util 'first';
 use Syntax::Keyword::Dynamically;
+
+use vars '@EXPORT';
+@EXPORT = qw(user_faux_mail hostfqdn domainname make_anonymous __pkgfn__);
+
+sub user_faux_mail {
+    first { /\.[^.]+$/ } @Net::Domain::[qw(hostfqdn domainname)];
+}
+
+sub hostfqdn {
+    Net::Domain::__SUB__->(@_);
+}
+
+sub domainname {
+    Net::Domain::__SUB__->(@_);
+}
 
 sub rc4 : prototype($$;$) ( $message, $key, $skip = undef ) {
     my @s       = 0 .. 255;
